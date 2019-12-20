@@ -37,7 +37,7 @@ cblss.fit(train_cblss)
 As CatBoost yields state-of-the-art prediction results without extensive data training typically required by other machine learning methods, we estimate the model with its default parameter settings. Once the model is trained, we can predict all parameters of the distribution.
 
 ```python
-preds_cblss = cblss.predict(test_cblss)  
+preds_cblss = cblss.predict(test_cblss, param = "all")  
 ```
 As **CatBoostLSS** allows to model the entire conditional distribution, we can draw random samples from the predicted distribution, which allows us to create prediction intervals and quantiles of interest. The below image shows the predictions of **CatBoostLSS** for the 5% and 95% quantile in blue.
 
