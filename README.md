@@ -113,6 +113,10 @@ CatBoostLSS provides a well calibrated forecast and the good approximation of ou
 ![Optional Text](../master/plots/MunichRent_varimp_mu.png)
 ![Optional Text](../master/plots/MunichRent_varimp_sigma.png)
 
+To get a more detailed overview of which features are most important for our model, we can also plot the SHAP values of every feature for every sample. The plot below sorts features by the sum of SHAP value magnitudes over all samples, and uses SHAP values to show the distribution of the impacts each feature has on the model output. The color represents the feature value (red high, blue low). This reveals for example that newer flats and more rooms increase rents.
+
+![Optional Text](../master/plots/MunichRent_shap_mu_all.png)
+
 Besides the global attribute importance, the user might also be interested in local attribute importances for each single prediction individually. This allows to answer questions like '*How did the feature values of a single data point affect its prediction*?' For illustration purposes, we select the first predicted rent of the test data set.
 
 ```python
