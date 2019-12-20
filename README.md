@@ -104,16 +104,16 @@ Looking at the estimated effects indicates that newer flats are on average more 
 
 ![Optional Text](../master/plots/MunichRent_pdp.png)
 
-The diagnostics for CatBoostLSS are based on quantile residuals of the fitted model. Quantile residuals are based on the idea of inverting the estimated distribution function for each observation to obtain exactly standard normal residuals.
+The diagnostics for **CatBoostLSS** are based on quantile residuals of the fitted model. Quantile residuals are based on the idea of inverting the estimated distribution function for each observation to obtain exactly standard normal residuals.
 
 ![Optional Text](../master/plots/MunichRent_quant_res.png)
 
-CatBoostLSS provides a well calibrated forecast and the good approximation of our model to the data is confirmed. CatBoostLSS also allows to investigate the estimated effects for all distributional parameter. Looking at the top 10 Shapley values for both the conditional mean and variance indicates that both *yearc* and *area* are considered as being important variables.
+**CatBoostLSS** provides a well calibrated forecast and the good approximation of our model to the data is confirmed. **CatBoostLSS** also allows to investigate the estimated effects for all distributional parameter. Looking at the top 10 Shapley values for both the conditional mean and variance indicates that both *yearc* and *area* are considered as being important variables.
 
 ![Optional Text](../master/plots/MunichRent_varimp_mu.png)
 ![Optional Text](../master/plots/MunichRent_varimp_sigma.png)
 
-To get a more detailed overview of which features are most important for our model, we can also plot the SHAP values of every feature for every sample. The plot below sorts features by the sum of SHAP value magnitudes over all samples, and uses SHAP values to show the distribution of the impacts each feature has on the model output. The color represents the feature value (red high, blue low). This reveals for example that newer flats and more rooms increase rents on average.
+To get a more detailed overview of which features are most important for our model, we can also plot the SHAP values of every feature for every sample. The plot below sorts features by the sum of SHAP value magnitudes over all samples, and uses SHAP values to show the distribution of the impacts each feature has on the model output. The color represents the feature value (red high, blue low). This reveals for example that newer flats increase rents on average.
 
 ```python
 # Gloabl Shapley values for E(y|x)
