@@ -128,6 +128,10 @@ As we have modelled all parameter of the Normal distribution, **CatBoostLSS** pr
 
 ![Optional Text](../master/plots/MunichRent_Boxplot.png)
 
+Also, we can plot a subset of the forecasted densities and cumulative distributions.
+
+![Optional Text](../master/plots/MunichRent_densities.png)
+
 ### Comparison to other approaches
 To evaluate the prediction accuracy of **CatBoostLSS**, we compare the forecasts of the Munich rent example to the implementations available in [XGBoostLSS](https://github.com/StatMixedML/XGBoostLSS), [gamlss](https://cran.r-project.org/web/packages/gamlss/index.html), [gamboostLSS](https://cran.r-project.org/package=gamboostLSS), [bamlss](https://cran.r-project.org/web/packages/bamlss/index.html), [disttree](https://rdrr.io/rforge/disttree/) and [NGBoost](https://github.com/stanfordmlgroup/ngboost/). We evaluate distributional forecasts using the average Continuous Ranked Probability Scoring Rules (CRPS) and the average Logarithmic Score (LOG), where lower scores indicate a better forecast, along with additional error measures evaluating the mean-prediction accuracy of the models.
 
@@ -142,6 +146,13 @@ DistForest      1.1554    2.1429 0.2532 4.2570 2.0633 1.6482    1.3611 0.7998 0.
 NGBoost         1.1521    2.1696 0.2500 4.1703 2.0421 1.6295    1.3862 0.7908 0.3963 0.2502 0.7858   0.3825
 ```
 All measures show that **CatBoostLSS** provides a competetive forecast using default parameter setttings. However, it is important to stress that all available parameter-tuning approaches implemented in CatBoost (e.g., early stopping, CV, etc.) are also available for **CatBoostLSS**.
+
+### Expectile Regression
+
+While **CatBoostLSS** require to specify a parametric distribution for the response, it may also be useful to completely drop this assumption and to use models that allow to describe parts of the distribution other than the mean. This may in particular be the case in situations where interest does not lie with identifying covariate effects on specific parameters of the response distribution, but rather on the relation of extreme observations on covariates in the tails of the distribution. This is feasible using Expectile Regression. Plotting the effects across
+different expectiles allows the estimated effects, as well as their strengths, to vary across the response distribution.
+
+![Optional Text](../master/plots/MunichRent_expectiles.png)
 
 ## Summary and key features
 
