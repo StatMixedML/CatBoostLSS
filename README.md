@@ -140,7 +140,7 @@ We can also visualize the test set predictions.
 shap.force_plot(mu_explainer.expected_value, shap_values_mu, test_data)
  ```
 
-![Optional Text](../master/plots/ Munich_rent_shap_test.png)
+![Optional Text](../master/plots/Munich_rent_shap_test.png)
 
 
 As we have modelled all parameter of the Normal distribution, **CatBoostLSS** provides a probabilistic forecast, from which any quantity of interest can be derived. The following plot shows a subset of 50 predictions only for ease of readability. The red dots show the actual out of sample rents, while the boxplots are the distributional predictions.
