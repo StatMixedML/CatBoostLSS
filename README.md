@@ -152,7 +152,24 @@ Also, we can plot a subset of the forecasted densities and cumulative distributi
 ![Optional Text](../master/plots/MunichRent_densities.png)
 
 ### Comparison to other approaches
-To evaluate the prediction accuracy of **CatBoostLSS**, we compare the forecasts of the Munich rent example to the implementations available in [XGBoostLSS](https://github.com/StatMixedML/XGBoostLSS), [gamlss](https://cran.r-project.org/web/packages/gamlss/index.html), [gamboostLSS](https://cran.r-project.org/package=gamboostLSS), [bamlss](https://cran.r-project.org/web/packages/bamlss/index.html), [disttree](https://rdrr.io/rforge/disttree/) and [NGBoost](https://github.com/stanfordmlgroup/ngboost/). We evaluate distributional forecasts using the average Continuous Ranked Probability Scoring Rules (CRPS) and the average Logarithmic Score (LOG), where lower scores indicate a better forecast, along with additional error measures evaluating the mean-prediction accuracy of the models. Recall that we use the default parameter setttings for **CatBoostLSS**, while all other models trained using parameter tuning.
+To evaluate the prediction accuracy of **CatBoostLSS**, we compare the forecasts of the Munich rent example to the implementations available in [XGBoostLSS](https://github.com/StatMixedML/XGBoostLSS), [gamlss](https://cran.r-project.org/web/packages/gamlss/index.html), [gamboostLSS](https://cran.r-project.org/package=gamboostLSS), [bamlss](https://cran.r-project.org/web/packages/bamlss/index.html), [disttree](https://rdrr.io/rforge/disttree/) and [NGBoost](https://github.com/stanfordmlgroup/ngboost/). We evaluate distributional forecasts using the average Continuous Ranked Probability Scoring Rules (CRPS) and the average Logarithmic Score (LOG), where lower scores indicate a better forecast, along with additional error measures evaluating the mean-prediction accuracy of the models. Recall that we use the default parameter setttings for **CatBoostLSS**, while all other models are trained using tuned parameters. Further details on how we trained the models can be found [here](https://github.com/StatMixedML/XGBoostLSS). NGBoost is trained as follows
+
+```python
+np.random.seed(seed = 1234)
+ngb = NGBoost(Base = default_tree_learner,
+              Dist = Normal,
+              Score = MLE(),
+              n_estimators = 200,
+              learning_rate = 0.03,              
+              natural_gradient = True,
+              minibatch_frac = 0.3,
+              verbose = False)
+ngb.fit(train_data, train_labels)
+Y_preds = ngb.predict(test_data)
+Y_dists = ngb.pred_dist(test_data)
+```
+
+All measures show that **CatBoostLSS** provides a competetive forecast using default parameter setttings. However, it is important to stress that all available parameter-tuning approaches implemented in CatBoost (e.g., early stopping, CV, etc.) are also available for **CatBoostLSS**.
 
 ```
             CRPS_SCORE LOG_SCORE   MAPE    MSE   RMSE    MAE MEDIAN_AE    RAE  RMSPE  RMSLE   RRSE R2_SCORE
@@ -164,7 +181,6 @@ BAMLSS          1.1509    2.1656 0.2478 4.1650 2.0408 1.6258    1.3542 0.7890 0.
 DistForest      1.1554    2.1429 0.2532 4.2570 2.0633 1.6482    1.3611 0.7998 0.3991 0.2516 0.7939   0.3697
 NGBoost         1.1696    2.2010 0.2522 4.2591 2.0638 1.6517    1.3950 0.8016 0.3929 0.2515 0.7941   0.3694
 ```
-All measures show that **CatBoostLSS** provides a competetive forecast using default parameter setttings. However, it is important to stress that all available parameter-tuning approaches implemented in CatBoost (e.g., early stopping, CV, etc.) are also available for **CatBoostLSS**.
 
 ### Expectile Regression
 
