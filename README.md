@@ -60,7 +60,7 @@ In this example we show the usage of **CatBoostLSS** using a sample of 2,053 apa
 
 The first decision one has to make is about choosing an appropriate distribution for the response. As there are many potential candidates, we use an automated approach based on the generalised Akaike information criterion.
 
-```python                  
+```r                  
       dist    GAIC
 1      GB2 6588.29
 2       NO 6601.17
@@ -102,7 +102,7 @@ cblss_rent.fit(train_cblss)
 ```
 Looking at the estimated effects indicates that newer flats are on average more expensive, with the variance first decreasing and increasing again for flats built around 1980 and later. Also, as expected, rents per square meter decrease with an increasing size of the appartment.  
 
-![Optional Text](../master/plots/munich_rent_estimated_effects.png)
+![Optional Text](../master/plots/MunichRent_pdp.png)
 
 The diagnostics for CatBoostLSS are based on quantile residuals of the fitted model. Quantile residuals are based on the idea of inverting the estimated distribution function for each observation to obtain exactly standard normal residuals.
 
@@ -129,10 +129,21 @@ As we have modelled all parameter of the Normal distribution, **CatBoostLSS** pr
 ![Optional Text](../master/plots/MunichRent_Boxplot.png)
 
 ### Comparison to other approaches
-To evaluate the prediction accuracy of **CatBoostLSS**, we compare the forecasts of the Munich rent example to the implementations available in [gamlss](https://cran.r-project.org/web/packages/gamlss/index.html), [gamboostLSS](https://cran.r-project.org/package=gamboostLSS), [bamlss](https://cran.r-project.org/web/packages/bamlss/index.html) and [disttree](https://rdrr.io/rforge/disttree/). For all implementations, we use factor coding, instead of dummy-coding as for **CatBoostLSS**.
+To evaluate the prediction accuracy of **CatBoostLSS**, we compare the forecasts of the Munich rent example to the implementations available in [XGBoostLSS](https://github.com/StatMixedML/XGBoostLSS), [gamlss](https://cran.r-project.org/web/packages/gamlss/index.html), [gamboostLSS](https://cran.r-project.org/package=gamboostLSS), [bamlss](https://cran.r-project.org/web/packages/bamlss/index.html), [disttree](https://rdrr.io/rforge/disttree/) and [NGBoost](https://github.com/stanfordmlgroup/ngboost/)
 
+We evaluate distributional forecasts using the average Continuous Ranked Probability Scoring Rules (CRPS) and the average Logarithmic Score (LOG) implemented in the [scoringRules](https://cran.r-project.org/web/packages/scoringRules/index.html) R-package, where lower scores indicate a better forecast, along with additional error measures evaluating the mean-prediction accuracy of the models.
 
-
+```r
+            CRPS_SCORE LOG_SCORE   MAPE    MSE   RMSE    MAE MEDIAN_AE    RAE  RMSPE  RMSLE   RRSE R2_SCORE
+CatBoostLSS     1.1562    2.1635 0.2492 4.0916 2.0228 1.6129    1.3740 0.7827 0.3955 0.2487 0.7784   0.3942
+XGBoostLSS      1.1415    2.1350 0.2450 4.0687 2.0171 1.6091    1.4044 0.7808 0.3797 0.2451 0.7762   0.3975
+gamboostLSS     1.1541    2.1920 0.2485 4.1596 2.0395 1.6276    1.3636 0.7898 0.3900 0.2492 0.7848   0.3841
+GAMLSS          1.1527    2.1848 0.2478 4.1636 2.0405 1.6251    1.3537 0.7886 0.3889 0.2490 0.7852   0.3835
+BAMLSS          1.1509    2.1656 0.2478 4.1650 2.0408 1.6258    1.3542 0.7890 0.3889 0.2490 0.7853   0.3833
+DistForest      1.1554    2.1429 0.2532 4.2570 2.0633 1.6482    1.3611 0.7998 0.3991 0.2516 0.7939   0.3697
+NGBoost         1.1521    2.1696 0.2500 4.1703 2.0421 1.6295    1.3862 0.7908 0.3963 0.2502 0.7858   0.3825
+```
+All measures show that **CatBoostLSS** provides a competetive forecast using default parameter setttings. However, it is important to stress that all available parameter-tuning approaches implemented in CatBoost (e.g., early stopping, CV, etc.) are also available for **CatBoostLSS**.
 
 ## Software Implementation
 In its current implementation, **CatBoostLSS** is available in *Python*.
