@@ -60,7 +60,7 @@ In this example we show the usage of **CatBoostLSS** using a sample of 2,053 apa
 
 The first decision one has to make is about choosing an appropriate distribution for the response. As there are many potential candidates, we use an automated approach based on the generalised Akaike information criterion.
 
-```r                  
+```              
       dist    GAIC
 1      GB2 6588.29
 2       NO 6601.17
