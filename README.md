@@ -135,7 +135,7 @@ Also, we can plot a subset of the forecasted densities and cumulative distributi
 ### Comparison to other approaches
 To evaluate the prediction accuracy of **CatBoostLSS**, we compare the forecasts of the Munich rent example to the implementations available in [XGBoostLSS](https://github.com/StatMixedML/XGBoostLSS), [gamlss](https://cran.r-project.org/web/packages/gamlss/index.html), [gamboostLSS](https://cran.r-project.org/package=gamboostLSS), [bamlss](https://cran.r-project.org/web/packages/bamlss/index.html), [disttree](https://rdrr.io/rforge/disttree/) and [NGBoost](https://github.com/stanfordmlgroup/ngboost/). We evaluate distributional forecasts using the average Continuous Ranked Probability Scoring Rules (CRPS) and the average Logarithmic Score (LOG), where lower scores indicate a better forecast, along with additional error measures evaluating the mean-prediction accuracy of the models.
 
-```r
+```
             CRPS_SCORE LOG_SCORE   MAPE    MSE   RMSE    MAE MEDIAN_AE    RAE  RMSPE  RMSLE   RRSE R2_SCORE
 CatBoostLSS     1.1562    2.1635 0.2492 4.0916 2.0228 1.6129    1.3740 0.7827 0.3955 0.2487 0.7784   0.3942
 XGBoostLSS      1.1415    2.1350 0.2450 4.0687 2.0171 1.6091    1.4044 0.7808 0.3797 0.2451 0.7762   0.3975
