@@ -3,7 +3,7 @@ We propose a new framework of [CatBoost](https://github.com/catboost/catboost) t
 
 ## Examples
 
-### Simulation
+### Simulation 
 
 We start with a simulated a data set that exhibits heteroscedasticity where the interest lies in predicting the 5% and 95% quantiles. Details on the data generating process can be found [here](https://github.com/StatMixedML/XGBoostLSS). The dots in red show points that lie outside the 5% and 95% quantiles, which are indicated by the black dashed lines.
 
@@ -201,7 +201,7 @@ In summary, **CatBoostLSS** has the following key features:
 - Missing value imputation.
 
 ## Software Implementation
-In its current implementation, **CatBoostLSS** is available in *Python* and the code will be made available soon.
+In its current implementation, **CatBoostLSS** is available in *Python* and the code will be made available soon. 
 
 ## Reference Paper
 März, Alexander (2019) [*"CatBoostLSS - An extension of CatBoost to probabilistic forecasting"*](https://arxiv.org/as/197.178).
