@@ -123,7 +123,7 @@ shap_values_mu = mu_explainer.shap_values(train_cblss)
 
 shap.summary_plot(shap_values_mu, train_data)
  ```
-![Optional Text](../master/plots/MunichRent_shap_mu_all.png)
+![Optional Text](../master/plots/MunichRent_mu_shap_all.png)
 
 Besides the global attribute importance, the user might also be interested in local attribute importances for each single prediction individually. This allows to answer questions like '*How did the feature values of a single data point affect its prediction*?' For illustration purposes, we select the first predicted rent of the test data set.
 
