@@ -79,7 +79,7 @@ The first decision one has to make is about choosing an appropriate distribution
 15 PARETO2 9020.04
 16      GP 9020.05
 ```
-Even though the generalized Beta type 2 provides the best approximation to the data, we use the more parsimonious Normal distribution, as it has only two distributional parameter, compared to 4 of the generalized Beta type 2. In general, though, **CatBoostLSS** is flexible to allow the user to choose from a wide range of continuous, discrete and mixed discrete-continuous distributions. Now that we have specified the distribution, let's fit our **CatBoostLSS** to the data. Again, we use the default parameter settings wihtout tuning the parameters.
+Even though the generalized Beta type 2 provides the best approximation to the data, we use the more parsimonious Normal distribution, as it has only two distributional parameter, compared to 4 of the generalized Beta type 2. In general, though, **CatBoostLSS** is flexible to allow the user to choose from a wide range of continuous, discrete and mixed discrete-continuous distributions. Now that we have specified the distribution, let's fit our **CatBoostLSS** to the data. Again, we use the default parameter settings without tuning the parameters.
 
 ```python   
 # Data for CatBoostLSS
