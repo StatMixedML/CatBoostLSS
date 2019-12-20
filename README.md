@@ -119,9 +119,9 @@ To get a more detailed overview of which features are most important for our mod
 # Gloabl Shapley values for E(y|x)
 shap.initjs()
 mu_explainer = shap.TreeExplainer(cblss_rent, param = "mu")
-shap_values_mu = mu_explainer.shap_values(train_cblss)
+shap_values_mu = mu_explainer.shap_values(test_cblss)
 
-shap.summary_plot(shap_values_mu, train_data)
+shap.summary_plot(shap_values_mu, test_data)
  ```
 ![Optional Text](../master/plots/MunichRent_mu_shap_all.png)
 
