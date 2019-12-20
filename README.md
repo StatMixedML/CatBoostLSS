@@ -129,9 +129,7 @@ As we have modelled all parameter of the Normal distribution, **CatBoostLSS** pr
 ![Optional Text](../master/plots/MunichRent_Boxplot.png)
 
 ### Comparison to other approaches
-To evaluate the prediction accuracy of **CatBoostLSS**, we compare the forecasts of the Munich rent example to the implementations available in [XGBoostLSS](https://github.com/StatMixedML/XGBoostLSS), [gamlss](https://cran.r-project.org/web/packages/gamlss/index.html), [gamboostLSS](https://cran.r-project.org/package=gamboostLSS), [bamlss](https://cran.r-project.org/web/packages/bamlss/index.html), [disttree](https://rdrr.io/rforge/disttree/) and [NGBoost](https://github.com/stanfordmlgroup/ngboost/)
-
-We evaluate distributional forecasts using the average Continuous Ranked Probability Scoring Rules (CRPS) and the average Logarithmic Score (LOG) implemented in the [scoringRules](https://cran.r-project.org/web/packages/scoringRules/index.html) R-package, where lower scores indicate a better forecast, along with additional error measures evaluating the mean-prediction accuracy of the models.
+To evaluate the prediction accuracy of **CatBoostLSS**, we compare the forecasts of the Munich rent example to the implementations available in [XGBoostLSS](https://github.com/StatMixedML/XGBoostLSS), [gamlss](https://cran.r-project.org/web/packages/gamlss/index.html), [gamboostLSS](https://cran.r-project.org/package=gamboostLSS), [bamlss](https://cran.r-project.org/web/packages/bamlss/index.html), [disttree](https://rdrr.io/rforge/disttree/) and [NGBoost](https://github.com/stanfordmlgroup/ngboost/). We evaluate distributional forecasts using the average Continuous Ranked Probability Scoring Rules (CRPS) and the average Logarithmic Score (LOG), where lower scores indicate a better forecast, along with additional error measures evaluating the mean-prediction accuracy of the models.
 
 ```r
             CRPS_SCORE LOG_SCORE   MAPE    MSE   RMSE    MAE MEDIAN_AE    RAE  RMSPE  RMSLE   RRSE R2_SCORE
@@ -145,8 +143,19 @@ NGBoost         1.1521    2.1696 0.2500 4.1703 2.0421 1.6295    1.3862 0.7908 0.
 ```
 All measures show that **CatBoostLSS** provides a competetive forecast using default parameter setttings. However, it is important to stress that all available parameter-tuning approaches implemented in CatBoost (e.g., early stopping, CV, etc.) are also available for **CatBoostLSS**.
 
+## Summary and key features
+
+In summary, **CatBoostLSS** has the following key features:
+
+- Extends CatBoost to probabilistic forecasting from which prediction intervals and quantiles of interest can be derived.
+- Valid uncertainty quantification of forecasts.
+- High interpretability of results.
+- Compatibility for training large models using large datasets (> 1 Mio rows).
+- Low memory usage.
+- Missing value imputation.
+
 ## Software Implementation
 In its current implementation, **CatBoostLSS** is available in *Python*.
 
 ## Reference Paper
-März, Alexander (2019) [*"CatBoostLSS - An extension of CatBoost to probabilistic forecasting"*](https://arxiv.org/abs/1907.0178).
+März, Alexander (2019) [*"CatBoostLSS - An extension of CatBoost to probabilistic forecasting"*](https://arxiv.og/abs/1907.0178).
