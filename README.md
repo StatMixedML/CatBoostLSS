@@ -1,5 +1,5 @@
 # CatBoostLSS - An extension of CatBoost to probabilistic forecasting
-We propose a new framework of CatBoost that predicts the entire conditional distribution of a univariate response variable. In particular, **CatBoostLSS** models all moments of a parametric distribution, i.e., mean, location, scale and shape (LSS), instead of the conditional mean only. Choosing from a wide range of continuous, discrete and mixed discrete-continuous distribution, modelling and predicting the entire conditional distribution greatly enhances the flexibility of CatBoost, as it allows to gain additional insight into the data generating process, as well as to create probabilistic forecasts from which prediction intervals and quantiles of interest can be derived. In the following, we provide a short walk-through of the functionality of **CatBoostLSS**.
+We propose a new framework of CatBoost that predicts the entire conditional distribution of a univariate response variable. In particular, **CatBoostLSS** models all moments of a parametric distribution, i.e., mean, location, scale and shape (LSS), instead of the conditional mean only. Choosing from a wide range of continuous, discrete and mixed discrete-continuous distributions, modelling and predicting the entire conditional distribution greatly enhances the flexibility of CatBoost, as it allows to gain additional insight into the data generating process, as well as to create probabilistic forecasts from which prediction intervals and quantiles of interest can be derived. In the following, we provide a short walk-through of the functionality of **CatBoostLSS**.
 
 ## Examples
 
@@ -50,3 +50,92 @@ The great flexibility of **CatBoostLSS** also comes from its ability to provide 
 The plot of the Shapley value shows that **CatBoostLSS** has identified the only informative predictor *x* and does not consider any of the noise variables X1, ..., X10 as an important feature. Looking at partial dependence plots of the effect of x on Var(y|x) shows that it also correctly identifies the amount of heteroscedasticity in the data.
 
 ![Optional Text](../master/plots/CatBoostLSS_sim_pdp.png)
+
+
+###  Data from the Rent Index 2003 in Munich, Germany
+
+In this example we show the usage of **CatBoostLSS** using a sample of 2,053 apartments from the data collected for the preparation of the Munich rent index 2003.
+
+![Optional Text](../master/plots/munich_rent_district.png)
+
+The first decision one has to make is about choosing an appropriate distribution for the response. As there are many potential candidates, we use an automated approach based on the generalised Akaike information criterion.
+
+```python                  
+      dist    GAIC
+1      GB2 6588.29
+2       NO 6601.17
+3       GG 6602.02
+4     BCCG 6602.26
+5      WEI 6602.37
+6   exGAUS 6603.17
+7      BCT 6603.35
+8    BCPEo 6604.26
+9       GA 6707.85
+10     GIG 6709.85
+11   LOGNO 6839.56
+12      IG 6871.12
+13  IGAMMA 7046.50
+14     EXP 9018.04
+15 PARETO2 9020.04
+16      GP 9020.05
+```
+Even though the generalized Beta type 2 provides the best approximation to the data, we use the more parsimonious Normal distribution, as it has only two distributional parameter, compared to 4 of the generalized Beta type 2. In general, though, **CatBoostLSS** is flexible to allow the user to choose from a wide range of continuous, discrete and mixed discrete-continuous distributions. Now that we have specified the distribution, let's fit our **CatBoostLSS** to the data. Again, we use the default parameter settings wihtout tuning the parameters.
+
+```python   
+# Data for CatBoostLSS
+train_cblss = Pool(data = train_data,
+                   label = train_labels,
+                   has_header = True)
+
+test_cblss = Pool(data = test_data,
+                  label = test_labels,
+                  has_header = True)
+
+# Fit model
+cblss_rent = CatBoostLSSRegressor(family = "NO",
+                                  leaf_estimation_method = "Newton",
+                                  logging_level = "Silent",
+                                  random_seed = 123,
+                                  thread_count = -1)
+
+cblss_rent.fit(train_cblss)
+```
+Looking at the estimated effects indicates that newer flats are on average more expensive, with the variance first decreasing and increasing again for flats built around 1980 and later. Also, as expected, rents per square meter decrease with an increasing size of the appartment.  
+
+![Optional Text](../master/plots/munich_rent_estimated_effects.png)
+
+The diagnostics for CatBoostLSS are based on quantile residuals of the fitted model. Quantile residuals are based on the idea of inverting the estimated distribution function for each observation to obtain exactly standard normal residuals.
+
+![Optional Text](../master/plots/MunichRent_quant_res.png)
+
+CatBoostLSS provides a well calibrated forecast and the good approximation of our model to the data is confirmed. CatBoostLSS also allows to investigate the estimated effects for all distributional parameter. Looking at the top 10 Shapley values for both the conditional mean and variance indicates that both *yearc* and *area* are considered as being important variables.
+
+![Optional Text](../master/plots/MunichRent_varimp_mu.png)
+![Optional Text](../master/plots/MunichRent_varimp_sigma.png)
+
+Besides the global attribute importance, the user might also be interested in local attribute importances for each single prediction individually. This allows to answer questions like '*How did the feature values of a single data point affect its prediction*?' For illustration purposes, we select the first predicted rent of the test data set.
+
+```python
+# Local Shapley value for E(y|x)
+shap.initjs()
+mu_explainer = shap.TreeExplainer(cblss_rent, param = "mu")
+shap_values_mu = mu_explainer.shap_values(train_cblss)
+shap.force_plot(mu_explainer.expected_value, shap_values_mu[1], test_data[:1])
+ ```
+![Optional Text](../master/plots/MunichRent_mu_shap.png)
+
+As we have modelled all parameter of the Normal distribution, **CatBoostLSS** provides a probabilistic forecast, from which any quantity of interest can be derived. The following plot shows a subset of 50 predictions only for ease of readability. The red dots show the actual out of sample rents, while the boxplots are the distributional predictions.
+
+![Optional Text](../master/plots/MunichRent_Boxplot.png)
+
+### Comparison to other approaches
+To evaluate the prediction accuracy of **CatBoostLSS**, we compare the forecasts of the Munich rent example to the implementations available in [gamlss](https://cran.r-project.org/web/packages/gamlss/index.html), [gamboostLSS](https://cran.r-project.org/package=gamboostLSS), [bamlss](https://cran.r-project.org/web/packages/bamlss/index.html) and [disttree](https://rdrr.io/rforge/disttree/). For all implementations, we use factor coding, instead of dummy-coding as for **CatBoostLSS**.
+
+
+
+
+## Software Implementation
+In its current implementation, **CatBoostLSS** is available in *Python*.
+
+## Reference Paper
+März, Alexander (2019) [*"CatBoostLSS - An extension of CatBoost to probabilistic forecasting"*](https://arxiv.org/abs/1907.0178).
