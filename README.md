@@ -113,20 +113,35 @@ CatBoostLSS provides a well calibrated forecast and the good approximation of ou
 ![Optional Text](../master/plots/MunichRent_varimp_mu.png)
 ![Optional Text](../master/plots/MunichRent_varimp_sigma.png)
 
-To get a more detailed overview of which features are most important for our model, we can also plot the SHAP values of every feature for every sample. The plot below sorts features by the sum of SHAP value magnitudes over all samples, and uses SHAP values to show the distribution of the impacts each feature has on the model output. The color represents the feature value (red high, blue low). This reveals for example that newer flats and more rooms increase rents.
+To get a more detailed overview of which features are most important for our model, we can also plot the SHAP values of every feature for every sample. The plot below sorts features by the sum of SHAP value magnitudes over all samples, and uses SHAP values to show the distribution of the impacts each feature has on the model output. The color represents the feature value (red high, blue low). This reveals for example that newer flats and more rooms increase rents on average.
 
+```python
+# Gloabl Shapley values for E(y|x)
+shap.initjs()
+mu_explainer = shap.TreeExplainer(cblss_rent, param = "mu")
+shap_values_mu = mu_explainer.shap_values(train_cblss)
+
+shap.summary_plot(shap_values_mu, train_data)
+ ```
 ![Optional Text](../master/plots/MunichRent_shap_mu_all.png)
 
 Besides the global attribute importance, the user might also be interested in local attribute importances for each single prediction individually. This allows to answer questions like '*How did the feature values of a single data point affect its prediction*?' For illustration purposes, we select the first predicted rent of the test data set.
 
 ```python
 # Local Shapley value for E(y|x)
-shap.initjs()
-mu_explainer = shap.TreeExplainer(cblss_rent, param = "mu")
-shap_values_mu = mu_explainer.shap_values(train_cblss)
 shap.force_plot(mu_explainer.expected_value, shap_values_mu[1], test_data[:1])
  ```
 ![Optional Text](../master/plots/MunichRent_mu_shap.png)
+
+
+We can also visualize the test set predictions.
+
+```python
+shap.force_plot(mu_explainer.expected_value, shap_values_mu, test_data)
+ ```
+
+![Optional Text](../master/plots/ Munich_rent_shap_test.png)
+
 
 As we have modelled all parameter of the Normal distribution, **CatBoostLSS** provides a probabilistic forecast, from which any quantity of interest can be derived. The following plot shows a subset of 50 predictions only for ease of readability. The red dots show the actual out of sample rents, while the boxplots are the distributional predictions.
 
