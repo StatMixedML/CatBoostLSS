@@ -42,3 +42,11 @@ preds_cblss = cblss.predict(test_cblss)
 As **CatBoostLSS** allows to model the entire conditional distribution, we can draw random samples from the predicted distribution, which allows us to create prediction intervals and quantiles of interest. The below image shows the predictions of **CatBoostLSS** for the 5% and 95% quantile in blue.
 
 ![Optional Text](../master/plots/CatBoostLSS_sim.png)
+
+The great flexibility of **CatBoostLSS** also comes from its ability to provide attribute importance, as well as partial dependence plots for all of the distributional parameters. In the following we only investigate the effect on the conditional variance. The following plots are generated using wrappers around the [SHAP (SHapley Additive exPlanations) ](https://github.com/slundberg/shap) package.
+
+![Optional Text](../master/plots/CatBoostLSS_sim_varimp.png)
+
+The plot of the Shapley value shows that **CatBoostLSS** has identified the only informative predictor *x* and does not consider any of the noise variables X1, ..., X10 as an important feature. Looking at partial dependence plots of the effect of x on Var(y|x) shows that it also correctly identifies the amount of heteroscedasticity in the data.
+
+![Optional Text](../master/plots/CatBoostLSS_sim_pdp.png)
