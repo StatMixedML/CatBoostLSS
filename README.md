@@ -204,4 +204,4 @@ In summary, **CatBoostLSS** has the following key features:
 In its current implementation, **CatBoostLSS** is available in *Python* and the code will be made available soon.
 
 ## Reference Paper
-März, Alexander (2019) [*"CatBoostLSS - An extension of CatBoost to probabilistic forecasting"*](https://arxiv.org/as/197.178).
+März, Alexander (2019) [*"CatBoostLSS - An extension of CatBoost to probabilistic forecasting"*](https://128.84.21.199/abs/2001.02121).
